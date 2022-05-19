@@ -1,0 +1,12 @@
+.ant-pagination-item-active {
+  border-color: #FF993C;
+  border-radius: 4px;
+}
+.ant-pagination-item a {
+  color: #1E0D03;
+}
+.ant-pagination-item-active a {
+  color: #FF993C;
+  font-size: 14px;
+  /*font-weight: normal; */
+}
