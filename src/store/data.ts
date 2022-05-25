@@ -2,7 +2,7 @@ export const dataTicketPage = [
     {
       stt: "1",
       code: "ABCD123",
-      ticketNumber: 12356789,
+      ticketNumber: 123456789,
       status: -1,
       dateUsed: "05/02/2022",
       dateExport: "05/02/2022",
@@ -11,7 +11,7 @@ export const dataTicketPage = [
     {
       stt: "2",
       code: "ABCD1sd23",
-      ticketNumber: 12345789,
+      ticketNumber: 123456789,
       status: 1,
       dateUsed: "05/02/2022",
       dateExport: "05/02/2022",
