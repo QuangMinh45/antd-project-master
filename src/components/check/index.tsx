@@ -13,7 +13,6 @@ import React, { useEffect, useState } from "react";
 import { dataTicketPage } from "../../store/data";
 import Button from "../common/Button";
 import Search from "../common/Search";
-import { FilterIcon } from "../icons/FilterIcon";
 import moment from "moment";
 
 interface Props {
@@ -130,18 +129,9 @@ const Check = ({ setTagIndex }: Props) => {
         >
           <Search size="445px" placeholder="Tìm bằng số vé" />
           <div style={{ marginTop: "-4px" }}>
-            <Button margin="0 10px" width="128px">
-              <span
-                style={{
-                  display: "inline-block",
-                  transform: "translate(-6px, 4px)",
-                }}
-              >
-                <FilterIcon />
-              </span>
-              Lọc vé
+            <Button margin="0 10px" width="170px" type="primary">
+              Chốt đối xoát
             </Button>
-            <Button width="180px">Xuất file (.csv)</Button>
           </div>
         </div>
         <Table
