@@ -9,13 +9,18 @@ import {
   Typography,
 } from "antd";
 import React, { useEffect, useState } from "react";
-// import { dataTicketPage } from "../../store/data";
 import Button from "../common/Button";
 import Search from "../common/Search";
 import { FilterIcon } from "../icons/FilterIcon";
 import { Checkbox } from "antd";
 import { db } from "../../firebase";
-import { collection, getDocs } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  onSnapshot,
+} from "firebase/firestore";
 
 interface Props {
   setTagIndex: React.Dispatch<React.SetStateAction<string>>;
@@ -25,14 +30,25 @@ const Ticket = ({ setTagIndex }: Props) => {
   useEffect(() => {
     setTagIndex("ticket");
     const data = async () => {
-      const ticket = await getDocs(collection(db, "ticket"));
-      const ticketData = ticket.docs.map((item: any) => {
-        return {
-          ...item.data(),
-          id: item.id,
-        };
+      // const ticket = await getDocs(collection(db, "ticket"));
+      // const ticketData = ticket.docs.map((item: any) => {
+      //   return {
+      //     ...item.data(),
+      //     id: item.id,
+      //   };
+      // });
+      // const q = query(
+      //   collection(db, "ticket"),
+      //   where("author", "==", "patrick rothfuss"),
+      //   orderBy("createdAt")
+      // );
+      onSnapshot(collection(db, "ticket"), (snapshot) => {
+        const books: any = [];
+        snapshot.docs.forEach((doc) => {
+          books.push({ ...doc.data(), id: doc.id });
+        });
+        setDataTicketPage(books);
       });
-      setDataTicketPage(ticketData);
     };
     data();
   }, []);
@@ -221,7 +237,23 @@ const Ticket = ({ setTagIndex }: Props) => {
             </span>
             Lọc vé
           </Button>
-          <Button width="180px">Xuất file (.csv)</Button>
+          <Button
+            width="180px"
+            // onClick={() => {
+            //   [...Array(200)].map((x, i) =>
+            //     addDoc(collection(db, "check"), {
+            //       stt: i,
+            //       ticketNumber: "123456",
+            //       name: "Hội chợ triển lãm tiêu dùng 2021",
+            //       dateUsed: "05/02/2022",
+            //       type: "Vé cổng",
+            //       port: "Cổng 1",
+            //     })
+            //   );
+            // }}
+          >
+            Xuất file (.csv)
+          </Button>
         </div>
       </div>
       <Table
