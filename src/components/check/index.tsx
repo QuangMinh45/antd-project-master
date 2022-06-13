@@ -10,20 +10,34 @@ import {
   Typography,
 } from "antd";
 import React, { useEffect, useState } from "react";
-import { dataTicketPage } from "../../store/data";
 import Button from "../common/Button";
 import Search from "../common/Search";
-import { FilterIcon } from "../icons/FilterIcon";
 import moment from "moment";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../firebase";
 
 interface Props {
   setTagIndex: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const Check = ({ setTagIndex }: Props) => {
+  const [dataTicketPage, setDataTicketPage] = useState<any[]>([]);
+  const [data, setData] = useState<any[]>([]);
   useEffect(() => {
     setTagIndex("check");
-  });
+    const data = async () => {
+      const ticket = await getDocs(collection(db, "check"));
+      const ticketData = ticket.docs.map((item: any) => {
+        return {
+          ...item.data(),
+          id: item.id,
+        };
+      });
+      setDataTicketPage(ticketData);
+      setData(ticketData);
+    };
+    data();
+  }, [setTagIndex]);
 
   const [value, setValue] = useState(1);
 
@@ -41,15 +55,16 @@ const Check = ({ setTagIndex }: Props) => {
     },
     {
       title: () => <div style={{}}>Số vé</div>,
-      dataIndex: "code",
-      render: (stt: string) => {
-        return <div style={{}}>{stt}</div>;
+      dataIndex: "ticketNumber",
+      render: (code: string) => {
+        return <div style={{}}>{code}</div>;
       },
     },
     {
       title: () => <div style={{}}>Tên sự kiện</div>,
-      render: (stt: string) => {
-        return <div style={{}}>Hội chợ triển lãm tiêu dùng 2021</div>;
+      dataIndex: "name",
+      render: (name: string) => {
+        return <div style={{}}>{name}</div>;
       },
     },
     {
@@ -78,19 +93,21 @@ const Check = ({ setTagIndex }: Props) => {
 
     {
       title: "Loại vé",
-      render: () => {
-        return <div>Vé cổng</div>;
+      dataIndex: "type",
+      render: (type: string) => {
+        return <div>{type}</div>;
       },
     },
     {
       title: "Cổng check-in",
-      render: () => {
-        return <div>Cổng 1</div>;
+      dataIndex: "port",
+      render: (port: string) => {
+        return <div>{port}</div>;
       },
     },
     {
       title: "",
-      render: () => {
+      render: (status: string) => {
         return (
           <div
             style={{
@@ -130,18 +147,9 @@ const Check = ({ setTagIndex }: Props) => {
         >
           <Search size="445px" placeholder="Tìm bằng số vé" />
           <div style={{ marginTop: "-4px" }}>
-            <Button margin="0 10px" width="128px">
-              <span
-                style={{
-                  display: "inline-block",
-                  transform: "translate(-6px, 4px)",
-                }}
-              >
-                <FilterIcon />
-              </span>
-              Lọc vé
+            <Button margin="0 10px" width="170px" type="primary">
+              Chốt đối xoát
             </Button>
-            <Button width="180px">Xuất file (.csv)</Button>
           </div>
         </div>
         <Table
@@ -247,7 +255,16 @@ const Check = ({ setTagIndex }: Props) => {
           </Col>
         </Row>
         <Row style={{ margin: "32px auto" }}>
-          <Button margin="0 auto">Lọc</Button>
+          <Button
+            margin="0 auto"
+            onClick={() => {
+              const newData = data.filter((item) => { })
+              if (value === 1 || value === 2) setDataTicketPage(data);
+              else setDataTicketPage([]);
+            }}
+          >
+            Lọc
+          </Button>
         </Row>
       </Layout.Content>
     </div>
